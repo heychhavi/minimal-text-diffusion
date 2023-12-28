@@ -71,16 +71,17 @@ def main():
     logger.log(f"saving the hyperparameters to {args.checkpoint_path}/training_args.json")
     with open(f"{args.checkpoint_path}/training_args.json", "w") as f:
         json.dump(args.__dict__, f, indent=2)
-
-    if args.debug:
-        wandb.init(mode="disabled")
-    else:
-        wandb.init(
-            project=os.getenv("WANDB_PROJECT", "minimial-text-diffusion"),
-            name=args.checkpoint_path + make_wandb_name_from_args(args),
-            notes=args.notes,
-        )
-        wandb.config.update(args.__dict__, allow_val_change=True)
+    
+    wandb.init(mode="disabled")
+    #if args.debug:
+    #    wandb.init(mode="disabled")
+    #else:
+    #    wandb.init(
+    #        project=os.getenv("WANDB_PROJECT", "minimial-text-diffusion"),
+    #        name=args.checkpoint_path + make_wandb_name_from_args(args),
+    #        notes=args.notes,
+    #    )
+    #    wandb.config.update(args.__dict__, allow_val_change=True)
 
     logger.log("training...")
     TrainLoop(
