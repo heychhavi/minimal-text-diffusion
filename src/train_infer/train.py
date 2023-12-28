@@ -10,7 +10,7 @@ import wandb
 from transformers import set_seed
 import os
 import sys
-sys.path.append('/content/gdrive/MyDrive/minimal-text-diffusion')
+sys.path.append('/kaggle/working/minimal-text-diffusion/')
 
 from src.utils import dist_util, logger
 from src.modeling.diffusion.resample import create_named_schedule_sampler
