@@ -243,7 +243,7 @@ class GaussianDiffusion:
         """
         assert "input_ids" in model_kwargs
         input_ids = model_kwargs.pop("input_ids").to(t.device)
-        x_start_mean = model.module.get_embeds(input_ids)
+        x_start_mean = model.model.module.get_embeds(input_ids)
         
         #x_start_mean = model.model.embed_layer.get_embeds(input_ids)
 
