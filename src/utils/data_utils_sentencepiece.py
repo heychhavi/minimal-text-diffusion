@@ -89,34 +89,30 @@ class TextDataset(Dataset):
         return out_dict
 
     @staticmethod
+    @staticmethod
     def collate_pad(batch, cutoff: int):
-        max_token_len = 0
+        # Find the maximum length in this batch
+        max_token_len = min(cutoff, max(len(item["input_ids"]) for item in batch))
+    
         num_elems = len(batch)
-        # batch[0] -> __getitem__[0] --> returns a tuple (embeddings, out_dict)
-
-        for i in range(num_elems):
-            max_token_len = max(max_token_len, len(batch[i]["input_ids"]))
-
-        max_token_len = min(cutoff, max_token_len)
-
-        tokens = torch.zeros(num_elems, max_token_len).long()
-        tokens_mask = torch.zeros(num_elems, max_token_len).long()
-        
-        has_labels = False
-        if "label" in batch[0]:
-            labels = torch.zeros(num_elems).long()
-            has_labels = True
-
-        for i in range(num_elems):
-            toks = batch[i]["input_ids"]
-            length = len(toks)
-            tokens[i, :length] = torch.LongTensor(toks)
+        tokens = torch.zeros(num_elems, max_token_len, dtype=torch.long)
+        tokens_mask = torch.zeros(num_elems, max_token_len, dtype=torch.long)
+    
+        has_labels = "label" in batch[0]
+        if has_labels:
+            labels = torch.zeros(num_elems, dtype=torch.long)
+    
+        for i, item in enumerate(batch):
+            toks = item["input_ids"]
+            length = min(len(toks), max_token_len)  # Ensure length does not exceed max_token_len
+            tokens[i, :length] = torch.tensor(toks[:length], dtype=torch.long)
             tokens_mask[i, :length] = 1
             if has_labels:
-                labels[i] = batch[i]["label"]
-        
-        # TODO: the first return None is just for backward compatibility -- can be removed
+                labels[i] = item["label"]
+    
         if has_labels:
             return None, {"input_ids": tokens, "attention_mask": tokens_mask, "labels": labels}
         else:
             return None, {"input_ids": tokens, "attention_mask": tokens_mask}
+
+    
