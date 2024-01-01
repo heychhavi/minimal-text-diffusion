@@ -12,6 +12,7 @@ from torch.utils.data import DataLoader
 from transformers.models.bert.modeling_bert import BertConfig, BertModel, BertPooler
 from transformers import AutoTokenizer
 from transformers.modeling_outputs import SequenceClassifierOutput
+sys.path.append('/kaggle/working/minimal-text-diffusion/src/')
 from modeling.diffusion.gaussian_diffusion import GaussianDiffusion
 
 
