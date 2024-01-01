@@ -17,7 +17,8 @@ import math
 
 import numpy as np
 import torch as th
-
+import sys
+sys.path.append('/kaggle/working/minimal-text-diffusion/')
 from src.modeling.diffusion.nn import mean_flat
 from src.modeling.diffusion.losses import normal_kl
 
