@@ -16,7 +16,7 @@ from src.utils.args_utils import *
 
 from src.utils.args_utils import create_argparser, args_to_dict, model_and_diffusion_defaults
 from src.utils.custom_tokenizer import create_tokenizer
-sys.path.insert(0, '/src')
+sys.path.insert(0, '/src/train_infer')
 from train_infer.factory_methods import create_model_and_diffusion
 
 
